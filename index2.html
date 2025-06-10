@@ -1,0 +1,15 @@
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script>
+        const rootElement = document.createElement('div');
+        rootElement.id = 'root';
+        document.body.appendChild(rootElement);
+        const appContainer = React.createElement('div', {
+            className: 'app-contianer',
+            children: [`Моё первое приложение`, React.createElement('p',{}, 'Это первый параграф')],
+        });
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(appContainer);
+    </script>
+</body>
