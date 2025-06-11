@@ -1,0 +1,24 @@
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const rootElement = document.createElement('div');
+        rootElement.id = 'root';
+        document.body.appendChild(rootElement);
+
+        const props = {
+            className: 'default-class',
+            children: 'Заглушка',
+            id: 'test-id',
+        };
+
+        const actualText = 'Привет, JSX!';
+        const className = 'my-container';
+
+        const divJSX = <div {...props} children={actualText} className={className}/>
+
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(divJSX);
+    </script>
+</body>
