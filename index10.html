@@ -1,0 +1,43 @@
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const state = {eventCount: 0, username: ''};
+
+        function handleClick () {
+            setState({eventCount: state.eventCount + 1});
+        }
+
+        function handleChange(event) {
+            setState({username: event.target.value});
+        }
+
+        function setState (newState) {
+            Object.assign(state, newState);
+            renderApp();
+        }
+
+        function App () {
+            return (
+                <div>
+                    <h2>Событий произошло: {state.eventCount}</h2>
+                    <p>Вы ввели: {state.username}</p>
+                    <button onClick={handleClick}>Click</button>
+                    <input onChange={handleChange}/>
+                </div>
+            )
+        }
+
+        function renderApp () {
+            root.render(<App />);
+        }
+
+        const rootElement = document.createElement('div');
+        rootElement.id = 'root';
+        document.body.appendChild(rootElement);
+
+        const root = ReactDOM.createRoot(rootElement);
+        renderApp();
+    </script>
+</body>
