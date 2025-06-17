@@ -24,7 +24,7 @@
                     <h2>Событий произошло: {state.eventCount}</h2>
                     <p>Вы ввели: {state.username}</p>
                     <button onClick={handleClick}>Click</button>
-                    <input onChange={handleChange}/>
+                    <input value={state.username} onChange={handleChange}/>
                 </div>
             )
         }
