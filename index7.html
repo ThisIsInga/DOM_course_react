@@ -1,0 +1,29 @@
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const rootElement = document.createElement('div');
+        rootElement.id = 'root';
+        document.body.appendChild(rootElement);
+
+        function MathResult(props){
+            return(
+                <div>
+                    <span>
+                        {props.a + props.b !== 0 ? `Сумма равна ${props.a + props.b}` : 'Сумма ничему не равна'}
+                    </span>
+                </div>
+            )
+        };
+
+        const element = (
+            <>
+                <MathResult a = {5} b = {3}/>
+            </>
+        )
+
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(element);
+    </script>
+</body>
