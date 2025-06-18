@@ -1,0 +1,35 @@
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const rootElement = document.createElement('div');
+        rootElement.id = 'root';
+        document.body.appendChild(rootElement);
+
+        function GreetingForm () {
+            const [name, setName] = React.useState('');
+
+            function handleChange(event){
+                return setName(event.target.value)
+            }
+
+            return(
+                <div>
+                    <form>
+                        <label htmlFor='username'>Имя:</label>
+                        <input id='username' value={name} onChange={handleChange}/>
+                    </form>
+                    <p>{name ? <strong>Привет, {name}!</strong> : 'Please type your name.'}</p>
+                </div>
+            )
+        }
+
+        function renderGreetingForm () {
+            root.render(<GreetingForm />);
+        }
+
+        const root = ReactDOM.createRoot(rootElement);
+        renderGreetingForm();
+    </script>
+</body>
