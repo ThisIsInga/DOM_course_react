@@ -1,0 +1,41 @@
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <style>
+        .light{
+            background-color: #fff;
+            color: #000;
+        }
+
+        .dark{
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+    <script type="text/babel">
+        const rootElement = document.createElement('div');
+        rootElement.id = 'root';
+        document.body.appendChild(rootElement);
+
+        function ThemeSwitcher(){
+            const [theme, setTheme] = React.useState(() => window.localStorage.getItem('theme') || 'light');
+
+            React.useEffect(() => {
+                window.localStorage.setItem('theme', theme);
+            }, [theme])
+
+            return(
+                <div className={theme === 'light' ? 'light' : 'dark'}>
+                    <h1>Переключатель темы</h1>
+                    <button onClick={() => setTheme('light')}>Светлая тема</button>
+                    <button onClick={() => setTheme('dark')}>Темная тема</button>
+                    <p>Тема: {theme == 'light' ? 'светлая' : 'темная'}</p>
+                </div>
+            )
+        }
+
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<ThemeSwitcher />)
+    </script>
+</body>
