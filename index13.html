@@ -1,0 +1,65 @@
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        function TodoApp () {
+            const [taskName, setTaskName] = React.useState('');
+            const [taskDescription, setTaskDescription] = React.useState('');
+            const [taskCount, setTaskCount] = React.useState(0);
+
+            function handleNameChange(event) {
+                setTaskName(event.target.value);
+            }
+
+            function handleDescriptionChange(event) {
+                setTaskDescription(event.target.value);
+            }
+
+            function handleAddTask(event) {
+                if(taskName && taskDescription){
+                    const taskString = `${taskName}: ${taskDescription}`;
+                    let existingTasks = JSON.parse(window.localStorage.getItem('tasks') || '[]');
+                    existingTasks.push(taskString);
+                    window.localStorage.setItem('tasks', JSON.stringify(existingTasks));
+                    setTaskName('')
+                    setTaskDescription('')
+                    setTaskCount(existingTasks.length);
+                }
+            }
+
+            React.useEffect(() => {
+                let countLS = window.localStorage.getItem('tasks');
+                if(countLS){
+                    let tasksArray = JSON.parse(countLS);
+                    setTaskCount(tasksArray.length);
+                }else{
+                    setTaskCount(0)
+                }
+            }, [])
+
+            return(
+                <div>
+                    <h1>Добавить задачу</h1>
+                    <div>
+                        <label>Имя задачи:</label>
+                        <input value={taskName} onChange={handleNameChange} placeholder='Введите имя задачи'/>
+                    </div>
+                    <div>
+                        <label>Описание задачи:</label>
+                        <input value={taskDescription} onChange={handleDescriptionChange} placeholder='Введите описание задачи' />
+                    </div>
+                    <button onClick={handleAddTask}>Добавить задачу</button>
+                    <p>Количество задач: {taskCount}</p>
+                </div>
+            )
+        }
+
+        const rootElement = document.createElement('div');
+        rootElement.id = 'root';
+        document.body.appendChild(rootElement);
+
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<TodoApp />);
+    </script>
+</body>
