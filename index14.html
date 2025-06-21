@@ -1,0 +1,67 @@
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const rootElement = document.createElement('div');
+        rootElement.id = 'root';
+        document.body.appendChild(rootElement);
+
+        function useHairStyleStorage(key, defaultValue) {
+            const [state, setState] = React.useState(() => {
+                const storedValue = window.localStorage.getItem(key);
+                return storedValue !== null ? storedValue : defaultValue;
+            });
+
+            React.useEffect(() => {
+                window.localStorage.setItem(key, state);
+            }, [key, state]);
+
+            return [state, setState];
+        }
+
+        function HairSalonApp() {
+            let [color, setColor] = useHairStyleStorage('hairColor', '');
+            let [style, setStyle] = useHairStyleStorage('styleType', '1');
+
+            function handleColorChange(event) {
+                setColor(event.target.value);
+            }
+
+            function handleStyleSelect(num) {
+                setStyle(num.toString());
+            }
+
+            function handlePaintHair() {
+                if (color) {
+                    const styleDescription = style === '1' ? 'Коротко' : style === '2' ? 'Средне' : 'Длинное';
+                    alert(`Вы покрасили волосы в ${color}, стиль ${styleDescription}`);
+                } else {
+                    alert('Пожалуйста, введи цвет волос.');
+                }
+            }
+
+            return (
+                <div>
+                    <h1>Парикмахерская</h1>
+                    <div>
+                        <label>Цвет волос:</label>
+                        <input value={color} onChange={handleColorChange} placeholder='Введите цвет' />
+                    </div>
+                    <div>
+                        <label>Тип прически:</label>
+                        <button onClick={() => handleStyleSelect(1)}>1 (Коротко)</button>
+                        <button onClick={() => handleStyleSelect(2)}>2 (Средне)</button>
+                        <button onClick={() => handleStyleSelect(3)}>3 (Длинное)</button>
+                    </div>
+                    <button onClick={handlePaintHair}>Покрасить</button>
+                    <p>Цвет волос: {color}</p>
+                    <p>Стиль: {style === '1' ? 'Коротко' : style === '2' ? 'Средне' : 'Длинное'}</p>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<HairSalonApp />);
+    </script>
+</body>
