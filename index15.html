@@ -1,0 +1,54 @@
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt"></script>
+     
+    <style>
+    .tilt-box {
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(135deg, #42a5f5, #478ed1);
+        color: white;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+</style>
+    <script type="text/babel">
+        const { useRef, useEffect } = React;
+
+        const rootElement = document.createElement('div');
+        rootElement.id = 'root';
+        document.body.appendChild(rootElement);
+
+        function TiltBox () {
+            const tiltRef = useRef(null);
+            useEffect(() => {
+                const tiltNode = tiltRef.current;
+                const vanillaTiltOptions = {
+                    max: 25,
+                    speed: 400,
+                    glare: true,
+                    "max-glare": 0.5
+                }
+                VanillaTilt.init(tiltNode, vanillaTiltOptions);
+                return () => {
+                    tiltNode.vanillaTilt.destroy();
+                }
+            }, []);
+
+            return (
+                <div ref={tiltRef} className='tilt-box'>
+                    <span>Наведи на меня!</span>
+                </div>
+            )
+        }
+
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<TiltBox />);
+    </script>
+</body>
