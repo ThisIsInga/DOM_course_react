@@ -19,15 +19,13 @@
     }
 </style>
     <script type="text/babel">
-        const { useRef, useEffect } = React;
-
         const rootElement = document.createElement('div');
         rootElement.id = 'root';
         document.body.appendChild(rootElement);
 
         function TiltBox () {
-            const tiltRef = useRef(null);
-            useEffect(() => {
+            const tiltRef = React.useRef(null);
+            React.useEffect(() => {
                 const tiltNode = tiltRef.current;
                 const vanillaTiltOptions = {
                     max: 25,
@@ -39,9 +37,9 @@
                 return () => {
                     tiltNode.vanillaTilt.destroy();
                 }
-            }, []);
+            }, [])
 
-            return (
+            return(
                 <div ref={tiltRef} className='tilt-box'>
                     <span>Наведи на меня!</span>
                 </div>
