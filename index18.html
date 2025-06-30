@@ -1,0 +1,42 @@
+<body>
+    <div id='root'></div>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script type='text/babel'>
+    function PasswordForm() {
+        const [password, setPassword] = React.useState('');
+
+        function isValidPassword(password) {
+            return password.length >= 8 && /\d/.test(password);
+        }
+
+        function handleChange(e) {
+            setPassword(e.target.value);
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            if (isValidPassword(password)) {
+                alert('Пароль принят');
+            }
+        }
+
+        const showError = password.length > 0 && !isValidPassword(password);
+        const error = showError ? 'Пароль должен содержать минимум 8 символов и хотя бы одну цифру.' : null;
+
+        return (
+            <form onSubmit={handleSubmit}>
+                <label>Пароль:</label>
+                <input type='password' placeholder='Введите пароль' value={password} onChange={handleChange} />
+                <div style={{color: 'red'}}>{error}</div>
+                <button type='submit' disabled={Boolean(error)}>Отправить</button>
+            </form>
+        );
+    }
+
+    const rootElement = document.getElementById('root');
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(<PasswordForm />);
+    </script>
+</body>
