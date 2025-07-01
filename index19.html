@@ -1,0 +1,38 @@
+<body>
+    <div id='root'></div>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script type='text/babel'>
+        function UsernameForm() {
+            const [username, setUsername] = React.useState('');
+
+            function handleChange (e) {
+                setUsername(e.target.value.toUpperCase());
+            }
+
+            function handleSubmit (e) {
+                e.preventDefault();
+                alert(`Вы ввели: ${username}`);
+            }
+
+            return(
+                <>
+                    <h1>Введите имя пользователя</h1>
+                    <form onSubmit={handleSubmit}>
+                        <div>
+                            <label htmlFor='usernameInput'>Имя пользователя</label>
+                            <input type='text' id='usernameInput' name='usernameInput' placeholder='Введите имя' value={username} onChange={handleChange}></input>
+                        </div>
+                        <button type='submit'>Отправить</button>
+                    </form>
+                    <p>Текущее имя: {username}</p>
+                </>
+            )
+        }
+        
+        const rootElement = document.getElementById('root');
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<UsernameForm />);
+    </script>
+</body>
