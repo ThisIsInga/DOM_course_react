@@ -1,0 +1,57 @@
+<body>
+    <div id='root'></div>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script type='text/babel'>
+        function KeyListDemo() {
+            const [items, setItems] = React.useState([
+                { id: 1, name: 'Выучить React' },
+                { id: 2, name: 'Сделать домашнее задание' },
+                { id: 3, name: 'Прогуляться' }
+            ]);
+
+            const [inputValue, setInputValue] = React.useState('');
+            const [nextId, setNextId] = React.useState(4);
+
+            function buttonAdd() {
+                if(inputValue){
+                    const newItem = {id: nextId, name: inputValue};
+                    setItems([...items, newItem]);
+                    setInputValue('');
+                    setNextId(nextId + 1);
+                }
+            }
+
+            function removeItem(item){
+                setItems(items.filter(i => i.id !== item.id));
+            }
+
+
+            //для проверки в F12
+            React.useEffect(() => {
+                console.log(items);
+            }, [items]);
+
+            return(
+                <div>
+                    <h1>Мой список дел</h1>
+                    <input placeholder='Новое дело' value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
+                    <button onClick={() => buttonAdd()}>Добавить</button>
+                    <ul>
+                        {items.map((item, index) => (
+                            <li key={item.id}>
+                                <p>{index + 1}. {item.name}</p>
+                                <button onClick={() => removeItem(item)}>Удалить</button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )
+        }
+
+        const rootElement = document.getElementById('root');
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<KeyListDemo />);
+    </script>
+</body>
