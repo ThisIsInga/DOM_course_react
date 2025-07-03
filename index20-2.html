@@ -1,0 +1,55 @@
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <div id='root'></div>
+    <script type='text/babel'>
+        class ErrorBoundary extends React.Component {
+            state = { error: null }
+
+            static getDerivedStateFromError(error) {
+                return { error }
+            }
+
+            render() {
+                const { error } = this.state
+                if (error) {
+                    return <this.props.FallbackComponent error={error} />
+                }
+                return this.props.children
+            }
+        }
+
+        function Bomb() {
+            throw new Error('Красная кнопка взорвала компонент!');
+        }
+
+        function ErrorFallback({ error }) {
+            return (
+                <div>
+                    <p>Что-то пошло не так!</p>
+                    <pre style={{ color: 'red' }}>{error.message}</pre>
+                </div>
+            )
+        }
+
+        function ErrorButtonsDemo() {
+            const [explode, setExplode] = React.useState(false);
+
+            return (
+                <div>
+                    <h1>Проверьте поведение кнопок</h1>
+                    <button style={{ backgroundColor: 'red', color: 'white', marginRight: 10 }} onClick={() => setExplode(true)}>Красная кнопка</button>
+                    <button style={{backgroundColor: 'blue', color: 'white'}} onClick={() => alert('Синяя кнопка не взорвала компонент!')}>Синяя кнопка</button>
+                    <ErrorBoundary FallbackComponent={ErrorFallback}>
+                        {explode ? <Bomb /> : 'жми на кнопку'}
+                    </ErrorBoundary>
+                </div>
+            );
+        }
+
+        const rootElement = document.getElementById('root');
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<ErrorButtonsDemo />);
+    </script>
+</body>

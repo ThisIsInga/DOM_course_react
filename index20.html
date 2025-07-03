@@ -1,0 +1,41 @@
+<body>
+    <div id='root'></div>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-error-boundary@1.2.5/dist/umd/react-error-boundary.js"></script>
+    <script type='text/babel'>
+        function ErrorButtonsDemo() {
+            const ErrorBoundary = ReactErrorBoundary.ErrorBoundary;
+            const [explode, setExplode] = React.useState(false)
+
+             function ErrorFallback({error}) {
+                return (
+                    <div>
+                        <p>Что-то пошло не так!</p>
+                        <pre style={{ color: 'red' }}>{error.message}</pre>
+                    </div>
+                );
+            }
+
+            function Bomb() {
+                throw new Error('Красная кнопка взорвала компонент!');
+            }
+            
+            return (
+                <div>
+                    <h1>Проверьте поведение кнопок</h1>
+                    <button style={{backgroundColor: 'red', color: 'white', marginRight: 10}} onClick={() => setExplode(true)}>Красная кнопка</button>
+                    <button style={{backgroundColor: 'blue', color: 'white'}} onClick={() => alert('Синяя кнопка не взорвала компонент!')}>Синяя кнопка</button>
+                    <ErrorBoundary FallbackComponent={ErrorFallback}>
+                        {explode ? <Bomb /> : null}
+                    </ErrorBoundary>
+                </div>
+            );
+        }
+
+        const rootElement = document.getElementById('root');
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<ErrorButtonsDemo />);
+    </script>
+</body>
