@@ -1,0 +1,51 @@
+<body>
+    <div id='root'></div>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script type='text/babel'>
+
+        function CatBreedForm() {
+            const [breedId, setBreedId] = React.useState('');
+            const [catImage, setCatImage] = React.useState('');
+
+            function handleChange(e) {
+                setBreedId(e.target.value);
+            }
+
+            function handleSubmit(e) {
+                e.preventDefault();
+                
+                fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`)
+                    .then(response => response.json())
+                    .then(catData => {
+                        if(catData.length > 0 ){
+                            setCatImage(catData[0].url);
+                        } else{
+                            setCatImage('');
+                        }
+                    })
+                    .catch(error => console.error('Ошибка:', error));
+
+            }
+
+            return(
+                <div>
+                    <h1>Найди кота по породе</h1>
+                    <form onSubmit={handleSubmit}>
+                        <div>
+                            <label htmlFor='breedInput'>ID породы кота</label>
+                            <input type='text' id='breedInput' name='breedInput' placeholder='Например, beng' value={breedId} onChange={handleChange}/>
+                            <button>Показать кота</button>
+                            {catImage ? <img src={catImage} alt='Фото кота' style={{ width: '600px' }}/> : null}
+                        </div>
+                    </form>
+                </div>
+            )
+        }
+
+        const rootElement = document.getElementById('root');
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<CatBreedForm />);
+    </script>
+</body>
