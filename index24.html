@@ -1,0 +1,59 @@
+<body>
+    <div id='root'></div>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script type='text/babel'>
+        function HttpDogViewer() {
+            const [statusCode, setStatusCode] = React.useState('');
+            const [status, setStatus] = React.useState('idle');
+            const [error, setError] = React.useState('');
+
+            function handleChange(e) {
+                setStatusCode(e.target.value);
+                setStatus('idle');
+            }
+            
+            function handleSubmit(e) {
+                e.preventDefault();
+                const num = Number(statusCode.trim());
+                if(num >= 100 && num <= 599){
+                    setStatus('resolved');
+                    setError('');
+                }else{
+                    setStatus('rejected')
+                    setError('Пожалуйста, введите корректный код статуса HTTP от 100 до 599.');
+                }
+            }
+
+            return(
+                <div>
+                    <h1>HTTP Dog Viewer</h1>
+                    <form onSubmit={handleSubmit}>
+                        <div>
+                            <label htmlFor='statusCodeInput'>Код статуса HTTP</label>
+                            <input type='text' id='statusCodeInput' name='statusCodeInput' placeholder='Введите код от 100 до 599' value={statusCode} onChange={handleChange} />
+                        </div>
+                        <button type="submit">Показать</button>
+                    </form>
+
+                    {status === 'idle' && (
+                        <p>Введите HTTP код и нажмите Показать</p>
+                    )}
+
+                    {status === 'resolved' && (
+                        <img src={`https://http.dog/${statusCode}.jpg`} />
+                    )}
+
+                    {status === 'rejected' && (
+                        <p style={{color: 'red'}}>Что то пошло не так! <br/> {error}</p>
+                    )}
+                </div>
+            )
+        }
+
+        const rootElement = document.getElementById('root');
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<HttpDogViewer />);
+    </script>
+</body>
