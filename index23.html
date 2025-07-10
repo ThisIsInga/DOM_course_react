@@ -5,43 +5,45 @@
     <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
     <script type='text/babel'>
 
+        function useCatImage(breedId) {
+            const [catImage, setCatImage] = React.useState(null);
+
+            React.useEffect(() => {
+                if (breedId) {
+                    fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`)
+                        .then(response => response.json())
+                        .then(catData => {
+                            if (catData.length > 0) {
+                                setCatImage(catData[0].url);
+                            } else {
+                                setCatImage('');
+                            }
+                        })
+                        .catch(error => console.error('Ошибка:', error));
+                }
+            }, [breedId]);
+
+            return catImage;
+        }
+
         function CatBreedForm() {
             const [breedId, setBreedId] = React.useState('');
-            const [catImage, setCatImage] = React.useState('');
+            const catImage = useCatImage(breedId);
 
             function handleChange(e) {
                 setBreedId(e.target.value);
             }
 
-            function handleSubmit(e) {
-                e.preventDefault();
-                
-                fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`)
-                    .then(response => response.json())
-                    .then(catData => {
-                        if(catData.length > 0 ){
-                            setCatImage(catData[0].url);
-                        } else{
-                            setCatImage('');
-                        }
-                    })
-                    .catch(error => console.error('Ошибка:', error));
-
-            }
-
-            return(
+            return (
                 <div>
                     <h1>Найди кота по породе</h1>
-                    <form onSubmit={handleSubmit}>
-                        <div>
-                            <label htmlFor='breedInput'>ID породы кота</label>
-                            <input type='text' id='breedInput' name='breedInput' placeholder='Например, beng' value={breedId} onChange={handleChange}/>
-                            <button>Показать кота</button>
-                            {catImage ? <img src={catImage} alt='Фото кота' style={{ width: '600px' }}/> : null}
-                        </div>
-                    </form>
+                    <div>
+                        <label htmlFor='breedInput'>ID породы кота</label>
+                        <input type='text' id='breedInput' name='breedInput' placeholder='Например, beng' value={breedId} onChange={handleChange} />
+                        {catImage ? <img src={catImage} alt='Фото кота' style={{ width: '600px' }} /> : null}
+                    </div>
                 </div>
-            )
+            );
         }
 
         const rootElement = document.getElementById('root');
